@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import LandingPage from './components/LandingPage/LandingPage';
 import MainVisualization from './components/MainVisualization/MainVisualization';
 import ChallengeMode from './components/ChallengeMode/ChallengeMode';
@@ -60,16 +60,13 @@ const darkTheme = createTheme({
 
 function App() {
   const [screen, setScreen] = useState<Screen>(Screen.Landing);
-  const [n, setN] = useState(4);
-
-  const handleStart = (newN: number) => {
-    setN(newN);
-    setScreen(Screen.Main);
-  };
 
   const handleRestart = () => {
-    setN(4);
     setScreen(Screen.Landing);
+  };
+
+  const handleStart = () => {
+    setScreen(Screen.Main);
   };
 
   return (

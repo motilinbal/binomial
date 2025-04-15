@@ -15,7 +15,6 @@ const BoxRow: React.FC<{
       {[...Array(n)].map((_, i) => (
         <Box
           key={i}
-          index={i}
           value={selections[i]}
           onSelect={val => {
             const newSelections = [...selections];

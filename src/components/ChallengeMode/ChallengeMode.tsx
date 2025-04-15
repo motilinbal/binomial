@@ -1,6 +1,5 @@
 import React from 'react';
 import TargetTermDisplay from './TargetTermDisplay';
-import ChallengeBoxRow from './ChallengeBoxRow';
 import ProgressTracker from './ProgressTracker';
 import FeedbackPanel from './FeedbackPanel';
 import BadgeDisplay from './BadgeDisplay';
@@ -25,14 +24,14 @@ const ChallengeMode: React.FC = () => {
   const { n } = useGlobalState();
   // Pick random k for a^k b^{n-k}
   const [targetK, setTargetK] = React.useState(() => Math.floor(Math.random() * (n + 1)));
-  const [selections, setSelections] = React.useState<("a"|"b")[]>(Array(n).fill(null));
+  const [selections, setSelections] = React.useState<("a"|"b")[]>(Array(n).fill("a"));
   const [foundCombos, setFoundCombos] = React.useState<Set<string>>(new Set());
   const [feedback, setFeedback] = React.useState<string>("");
 
   // Reset challenge if n changes
   React.useEffect(() => {
     setTargetK(Math.floor(Math.random() * (n + 1)));
-    setSelections(Array(n).fill(null));
+    setSelections(Array(n).fill("a"));
     setFoundCombos(new Set());
     setFeedback("");
   }, [n]);
@@ -42,10 +41,7 @@ const ChallengeMode: React.FC = () => {
 
   // When user submits (all selected)
   const handleSubmit = () => {
-    if (selections.includes(null)) {
-      setFeedback('Please make a selection for each box.');
-      return;
-    }
+    // Removed check for null since selections can only be 'a' or 'b'
     if (countA !== targetK) {
       setFeedback(`Incorrect: You need exactly ${targetK} a's.`);
       return;
@@ -67,7 +63,7 @@ const ChallengeMode: React.FC = () => {
 
   // Handler to reset selections
   const handleResetSelections = () => {
-    setSelections(Array(n).fill(null));
+    setSelections(Array(n).fill("a"));
     setFeedback("");
   };
 
@@ -79,7 +75,6 @@ const ChallengeMode: React.FC = () => {
         {[...Array(n)].map((_, i) => (
           <Box
             key={i}
-            index={i}
             value={selections[i]}
             onSelect={val => {
               const newSelections = [...selections];

@@ -8,13 +8,12 @@ import { TooltipProps } from 'recharts';
  */
 const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload }) => {
   if (active && payload && payload.length > 0) {
-    const { k, term, count } = payload[0].payload;
     return (
       <div style={{ background: '#23272A', color: '#F3F6F9', padding: 8, borderRadius: 6, border: '1px solid #444' }}>
         <div style={{ fontSize: 14 }}>
-          <MathDisplay latex={term.replace('a^', 'a^{').replace('b^', '} b^{') + '}'} fontSize={14} />
+          <MathDisplay latex={payload[0].payload.term.replace('a^', 'a^{').replace('b^', '} b^{') + '}'} fontSize={14} />
         </div>
-        <div>Count: {count}</div>
+        <div>Count: {payload[0].payload.count}</div>
       </div>
     );
   }
