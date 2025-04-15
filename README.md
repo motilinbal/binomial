@@ -7,8 +7,6 @@ A modern, interactive web app for exploring the binomial theorem visually! Perfe
 - **Visualize Binomial Expansions:**
   - See the terms of $(a+b)^n$ built step by step.
   - Select the number of factors ($n$) and watch the expansion unfold.
-- **Pascal's Triangle:**
-  - Instantly see how binomial coefficients relate to Pascal's Triangle.
 - **Interactive Exploration:**
   - Click to choose $a$ or $b$ for each factor and see the resulting term.
   - Try Challenge Mode to find all combinations for a given term!
@@ -48,7 +46,6 @@ A modern, interactive web app for exploring the binomial theorem visually! Perfe
 
 ## 📚 Educational Value
 - Explore how binomial coefficients work.
-- Discover patterns in Pascal’s Triangle.
 - Understand probability distributions in a hands-on way.
 - Designed for clarity, accessibility, and engagement.
 
