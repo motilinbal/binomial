@@ -94,23 +94,13 @@ function App() {
             onMain={() => setScreen(Screen.Main)}
           />
         )}
-        {/* Simple navigation buttons for demonstration */}
-        <div style={{ position: 'fixed', bottom: 10, left: 10 }}>
-          {screen !== Screen.Landing && (
-            <button onClick={() => setScreen(Screen.Landing)}>Landing</button>
-          )}
-          {screen !== Screen.Main && (
-            <button onClick={() => setScreen(Screen.Main)}>Main</button>
-          )}
-          {screen !== Screen.Challenge && (
-            <button onClick={() => setScreen(Screen.Challenge)}>Challenge</button>
-          )}
-          {screen !== Screen.Simulation && (
-            <button onClick={() => setScreen(Screen.Simulation)}>Simulation</button>
-          )}
-          {screen !== Screen.Summary && (
-            <button onClick={() => setScreen(Screen.Summary)}>Summary</button>
-          )}
+        {/* Consistent navigation buttons */}
+        <div style={{ position: 'fixed', bottom: 10, left: 10, display: 'flex', gap: '8px' }}>
+          <button onClick={() => setScreen(Screen.Landing)} disabled={screen === Screen.Landing}>Landing</button>
+          <button onClick={() => setScreen(Screen.Main)} disabled={screen === Screen.Main}>Main</button>
+          <button onClick={() => setScreen(Screen.Challenge)} disabled={screen === Screen.Challenge}>Challenge</button>
+          <button onClick={() => setScreen(Screen.Simulation)} disabled={screen === Screen.Simulation}>Simulation</button>
+          <button onClick={() => setScreen(Screen.Summary)} disabled={screen === Screen.Summary}>Summary</button>
         </div>
       </GlobalStateProvider>
     </ThemeProvider>

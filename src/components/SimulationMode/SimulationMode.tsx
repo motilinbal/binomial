@@ -23,7 +23,8 @@ function binomialCoeff(n: number, k: number): number {
 const SimulationMode: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const { n, setN } = useGlobalState();
   const [trials, setTrials] = React.useState(1000);
-  const [results, setResults] = React.useState<number[]>(Array(n + 1).fill(0)); // results[k] = count of a^k b^{n-k}
+  const [probability, setProbability] = React.useState(0.5); // New state for P(a)
+  const [results, setResults] = React.useState<number[]>(Array(n + 1).fill(0));
   const [running, setRunning] = React.useState(false);
 
   // Run simulation
@@ -31,10 +32,9 @@ const SimulationMode: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
     setRunning(true);
     const counts = Array(n + 1).fill(0);
     for (let t = 0; t < trials; t++) {
-      // Randomly select a/b for each box
       let aCount = 0;
       for (let i = 0; i < n; i++) {
-        if (Math.random() < 0.5) aCount++;
+        if (Math.random() < probability) aCount++;
       }
       counts[aCount]++;
     }
@@ -46,17 +46,16 @@ const SimulationMode: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const handleReset = () => {
     setResults(Array(n + 1).fill(0));
     setTrials(1000);
+    setProbability(0.5);
   };
 
   // Theoretical probabilities
-  const theoretical = Array.from({ length: n + 1 }, (_, k) => binomialCoeff(n, k) / Math.pow(2, n));
+  const theoretical = Array.from({ length: n + 1 }, (_, k) => binomialCoeff(n, k) * Math.pow(probability, k) * Math.pow(1 - probability, n - k));
 
-  // When n changes, reset results immediately to avoid out-of-bounds errors
   React.useEffect(() => {
     setResults(Array(n + 1).fill(0));
   }, [n]);
 
-  // Defensive: do not render children until results.length matches n+1
   const safeToRender = results.length === n + 1;
 
   return (
@@ -79,46 +78,32 @@ const SimulationMode: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
             max={10}
             step={1}
             marks
+            onChange={(_, val) => setN(Number(val))}
             valueLabelDisplay="auto"
-            onChange={(_, value) => typeof value === 'number' && setN && setN(value)}
-            style={{ width: 180 }}
+            sx={{ width: 160 }}
           />
         </Box>
       </Tooltip>
+      <SimulationControls
+        trials={trials}
+        setTrials={setTrials}
+        probability={probability}
+        setProbability={setProbability}
+        runSimulation={runSimulation}
+        running={running}
+        onReset={handleReset}
+      />
       {safeToRender && (
         <>
-          <SimulationControls
-            trials={trials}
-            setTrials={setTrials}
-            runSimulation={runSimulation}
-            running={running}
-            onReset={handleReset}
-          />
-          <Tooltip
-            title={<span>Histogram of simulation results for each term <MathDisplay latex={'a^k b^{n-k}'} fontSize={14} /></span>}
-            placement="top"
-            enterTouchDelay={0}
-            leaveTouchDelay={2000}
-          >
-            <Box my={2}>
-              <HistogramChart results={results} n={n} />
-            </Box>
-          </Tooltip>
-          <Tooltip
-            title={<span>Compare the simulated (empirical) probabilities to the theoretical probabilities from the binomial theorem.</span>}
-            placement="top"
-            enterTouchDelay={0}
-            leaveTouchDelay={2000}
-          >
-            <Box my={2}>
-              <ProbabilityComparison results={results} trials={trials} theoretical={theoretical} />
-            </Box>
-          </Tooltip>
+          <HistogramChart results={results} n={n} />
+          <Box my={2}>
+            <ProbabilityComparison results={results} trials={trials} theoretical={theoretical} />
+          </Box>
         </>
       )}
       <Box mt={2}>
         <Typography variant="body2" color="textSecondary">
-          <b>How does this work?</b> For each trial, the app randomly selects "a" or "b" for each box. The histogram shows how often each term appears. The theoretical probability is given by the binomial coefficient divided by 2<sup>n</sup>.
+          <b>How does this work?</b> For each trial, the app randomly selects "a" with probability p and "b" with probability 1-p for each box. The histogram shows how often each term appears. The theoretical probability for each term is C(n, k) × p<sup>k</sup> × (1-p)<sup>n-k</sup>.
         </Typography>
       </Box>
     </Box>
