@@ -19,7 +19,9 @@ A modern, interactive web app for exploring the binomial theorem visually! Perfe
 
 ## 🖥️ Demo
 
-> Coming soon! Or run locally (see below).
+- **Live App:** [Binomial Theorem Interactive Visualization on GitHub Pages](https://motilinbal.github.io/binomial/)
+
+  You can try the latest version of the app directly in your browser, with no installation required. All features—including visualization, simulation, and challenge modes—are available online.
 
 ## 🛠️ Getting Started
 
